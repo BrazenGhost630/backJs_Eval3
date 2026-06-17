@@ -22,7 +22,12 @@ async function initDB() {
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME
+            database: 'information_schema'
         });
+
+        await tempConnection.execute(`CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME}\``);
+        await tempConnection.end(); 
+        console.log(`Database '${process.env.DB_NAME}' verified or created successfully`);
         console.log('Connected to MySQL database');
         
         // Create users table if not exists

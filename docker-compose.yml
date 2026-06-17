@@ -1,0 +1,28 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_users
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=users_db
+    volumes:
+      - mysql_users_data:/var/lib/mysql
+    
+  app:
+    build: .
+    container_name: app_users
+    restart: on-failure
+    depends_on:
+      - mysql
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=users_db
+      - PORT=8081
+
+volumes:
+  mysql_users_data:
